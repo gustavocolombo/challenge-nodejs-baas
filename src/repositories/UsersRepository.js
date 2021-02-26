@@ -76,7 +76,6 @@ export default class UsersRepository {
      * @param {number} id
      * @memberof UserRepository
     */
-
     
     async update(user, id){
         let foundUser = await User

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import environment from "../configs/enviroment";
+import enviroment from "../configs/enviroment";
 import { UsersRepository } from "../repositories";
-import { ExceptiontGlobalHandler, encryptText, checkEncryptText } from "../shared";
+import { ExceptionGlobalHandler, encryptText, checkEncryptText } from "../shared";
 import { UserValidator } from "../validator";
 
 export default class UserController {
@@ -10,27 +10,23 @@ export default class UserController {
         this.repository = new UsersRepository();
     }
 
-        async login(req, res) {
+    async login(req, res) {
         try {
             const user = req.body;
     
             const foundUser = await this.repository.findOneByEmail(user.email);
-
-            foundUser._doc.profile.roles.map((v, index) => foundUser._doc.profile.roles[index] = v.name);
     
             const validPass = checkEncryptText(user.password, foundUser.password);
     
             if(!validPass) {
-                throw ExceptiontGlobalHandler.makeError(`Invalid password!`, 401, 'VDTE')
+                throw ExceptionGlobalHandler.makeError(`Invalid password!`, 401, 'VDTE')
             }
 
             const token = jwt.sign({
                 id: foundUser._id,
                 email: foundUser.email,
-                profile: foundUser.profile.name,
-                roles: foundUser.profile.roles
                 },
-                environment.privateJWT,
+                enviroment.privateJWT,
                 { expiresIn: "7d" }
             )
 
@@ -43,12 +39,10 @@ export default class UserController {
                 token: token,
             })
         }catch (error) {
-            const sanitizedError = ExceptiontGlobalHandler.handle(error);
+            const sanitizedError = ExceptionGlobalHandler.handle(error);
 
             res.status(sanitizedError.code).send(sanitizedError)
         }
-
-
     }
 
     async listUsers(req, res) {
@@ -69,7 +63,7 @@ export default class UserController {
             let savedUser = await this.repository.store(user)
             res.send(savedUser)
         } catch (error){
-            const sanitizedError = ExceptiontGlobalHandler.handle(error);
+            const sanitizedError = ExceptionGlobalHandler.handle(error);
 
             res.status(sanitizedError.code).send(sanitizedError)
         }
@@ -85,7 +79,7 @@ export default class UserController {
             let updatedUser = await this.repository.update(body, id)
             res.send(updatedUser)
         } catch (error){
-            const sanitizedError = ExceptiontGlobalHandler.handle(error);
+            const sanitizedError = ExceptionGlobalHandler.handle(error);
 
             res.status(sanitizedError.code).send(sanitizedError)
         }
@@ -100,7 +94,7 @@ export default class UserController {
                 message: `User with id ${id} successful deleted!`
             })
         } catch (error){
-            const sanitizedError = ExceptiontGlobalHandler.handle(error);
+            const sanitizedError = ExceptionGlobalHandler.handle(error);
 
             res.status(sanitizedError.code).send(sanitizedError)
         }

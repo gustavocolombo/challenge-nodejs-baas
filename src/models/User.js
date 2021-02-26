@@ -1,37 +1,28 @@
-import { Schema, model } from 'mongoose';
-import { uuid } from 'uuidv4';
+import mongoose from 'mongoose';
 
-const schema = new Schema({
-  email:{
+const UserSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true,
-    unique: true,
   },
-
-  password:{
+  cpf: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
     type: String,
     required: true,
-    default: ""
   },
-
-  telephone:{
-    type: String,
-    required: false,
-    unique: true,
+  balance: {
+    type: Number,
+    default: 0,
   },
+});
 
-  createdAt:{
-    type: Date,
-    default: Date.now()
-  },
-
-  updateAt:{
-    type: Date,
-    default: Date.now()
-  }
-},{
-    versionKey: false,
-  }
-);
-
-export default model("User", schema, "users");
+export default mongoose.model('User', UserSchema);

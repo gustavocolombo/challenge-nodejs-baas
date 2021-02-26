@@ -1,19 +1,19 @@
-import { Schema, model } from 'mongoose';
+import {Schema, model} from 'mongoose';
 
 const schema = new Schema({
-  account_sender:{
+  accountSender:{
     type: Schema.Types.ObjectId,
     ref: "Account",
   },
 
-  account_recipient:{
+  accountRecipient:{
     type: Schema.Types.ObjectId,
     ref: "Account",
   },
 
   value:{
     type: Number,
-    default:"0"
+    default: "0"
   },
 
   createdAt:{
@@ -25,9 +25,6 @@ const schema = new Schema({
     type: Date,
     default: Date.now(),
   },
-
-},{
-  versionKey: false
 });
 
-export default model("Transfer", schema, "transfers");
+export default model("Transfer",schema,"transfers");
