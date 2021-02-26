@@ -8,6 +8,7 @@ export const encryptText = (text) =>{
 }
 
 export const checkEncryptText = (text, checkText) =>{
-  let textToCompare = `${process.env.encryptText}-${text}`
+  let textToCompare = `${enviroment.encryptText}-${text}`
     return bcrypt.compareSync(textToCompare, checkText.toString());
 }
+

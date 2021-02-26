@@ -13,11 +13,13 @@ export default class UserController {
     async login(req, res) {
         try {
             const user = req.body;
-    
+
             const foundUser = await this.repository.findOneByEmail(user.email);
     
             const validPass = checkEncryptText(user.password, foundUser.password);
-            
+
+            console.log(validPass);
+    
             if(!validPass) {
                 throw ExceptionGlobalHandler.makeError(`Invalid password!`, 401, 'VDTE')
             }
@@ -26,7 +28,7 @@ export default class UserController {
                 id: foundUser._id,
                 email: foundUser.email,
                 },
-                enviroment.privateJWT,
+                enviroment.privateJwt,
                 { expiresIn: "7d" }
             )
 
@@ -40,6 +42,8 @@ export default class UserController {
             })
         }catch (error) {
             const sanitizedError = ExceptionGlobalHandler.handle(error);
+
+            console.log(error);
 
             res.status(sanitizedError.code).send(sanitizedError)
         }

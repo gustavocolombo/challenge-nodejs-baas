@@ -12,10 +12,10 @@ const schema = new Schema({
   value: {
     type: Number,
   },
-
   created_at: {
     type: Date,
-    default: Date.now,
+    required: true,
+    default: Date.now(),
   },
 });
 

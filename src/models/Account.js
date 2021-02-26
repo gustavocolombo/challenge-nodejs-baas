@@ -36,6 +36,8 @@ const schema = new Schema({
     default: Date.now(),
   },
 
-},);
+},{
+  versionKey: false
+});
 
-export default model("Account", schema, "accounts")
+export default model("Account", schema, "accounts");
