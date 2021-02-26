@@ -17,7 +17,7 @@ export default class UserController {
             const foundUser = await this.repository.findOneByEmail(user.email);
     
             const validPass = checkEncryptText(user.password, foundUser.password);
-    
+            
             if(!validPass) {
                 throw ExceptionGlobalHandler.makeError(`Invalid password!`, 401, 'VDTE')
             }

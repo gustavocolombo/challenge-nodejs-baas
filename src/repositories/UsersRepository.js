@@ -37,34 +37,12 @@ export default class UsersRepository {
     }
 
     /**
-     * @param {string} email
-     * @memberof UserRepository
-    */
-
-   async checkToCreate(email){
-        let foundUser = await User
-            .findOne({
-                email: email
-            });
-        
-        if(foundUser) {
-            throw new AppError(getMessage('accountAlreadyUsed')(email), 'MongoError', 404);
-        }
-
-        return foundUser    
-    }       
-    
-    /**
      * Store an User in DB
      * @param {User} user
      * @memberof UserRepository
     */
 
     async store(user){
-        let checkUser = await User.checkToCreate(user);
-
-        if(checkUser) throw new AppError(getMessage('accountAlreadyUsed')(email), 'MongoError', 404);
-
         let storedUser = await User.create(user);
         return storedUser;
 

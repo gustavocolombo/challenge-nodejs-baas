@@ -36,35 +36,6 @@ const schema = new Schema({
     default: Date.now(),
   },
 
-},{
-  versionKey: false
-});
+},);
 
 export default model("Account", schema, "accounts")
-
-/*
-  accountSender:{
-    type: Schema.Types.ObjectId,
-    ref: "Account",
-  },
-
-  accountRecipient:{
-    type: Schema.Types.ObjectId,
-    ref: "Account",
-  },
-
-  value:{
-    type: Number,
-    default: 0
-  },
-
-  createdAt:{
-    type: Date,
-    default: Date.now(),
-  },
-
-  updateAt:{
-    type: Date,
-    default: Date.now(),
-  },
-*/

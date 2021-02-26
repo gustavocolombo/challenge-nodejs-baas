@@ -1,29 +1,21 @@
 import {Schema, model} from 'mongoose';
 
 const schema = new Schema({
-  accountSender:{
+  id_sender: {
     type: Schema.Types.ObjectId,
-    ref: "Account",
+    ref: "User",
   },
-
-  accountRecipient:{
+  id_recipient: {
     type: Schema.Types.ObjectId,
-    ref: "Account",
+    ref: "User",
   },
-
-  value:{
+  value: {
     type: Number,
-    default: "0"
   },
 
-  createdAt:{
+  created_at: {
     type: Date,
-    default: Date.now(),
-  },
-
-  updateAt:{
-    type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 
