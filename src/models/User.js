@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Account from './Account';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -19,10 +20,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  balance: {
-    type: Number,
-    default: 0,
+  account_id:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Account'
   },
 });
+
+UserSchema.pre('save', async function save(next) {
+  const user = this;
+  const createAccount = await Account.create({});
+  user.account_id = createAccount;
+
+  next();
+})
 
 export default mongoose.model('User', UserSchema);

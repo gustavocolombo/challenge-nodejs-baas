@@ -1,24 +1,17 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
+import mongooseSequence from 'mongoose-sequence';
 
-const schema = new Schema({
+const AutIncrement = mongooseSequence(mongoose);
+
+const AccountSchema = mongoose.Schema({
   agency:{
     type: Number,
-    default: "01",
+    default: 1,
   },
 
   numberAccount:{
     type: Number,
     unique:true,
-  },
-
-  account_id:{
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  },
-
-  balance:{
-    type: Number,
-    default: "0",
   },
   
   active:{
@@ -26,18 +19,26 @@ const schema = new Schema({
     default: true,
   },
 
-  createdAt:{
+  balance: {
+    type: Number,
+    default: 0,
+  },
+
+  created_at:{
     type: Date,
     default: Date.now(),
   },
 
-  updateAt:{
+  update_at:{
     type: Date,
     default: Date.now(),
   },
 
-},{
-  versionKey: false
 });
 
-export default model("Account", schema, "accounts");
+AccountSchema.plugin(AutIncrement, {
+  inc_field: 'numberAccount',
+  start_seq: 1000,
+});
+
+export default mongoose.model('Account', AccountSchema);

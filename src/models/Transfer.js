@@ -1,13 +1,14 @@
 import {Schema, model} from 'mongoose';
+import mongoose from 'mongoose';
 
-const schema = new Schema({
+const Transferschema = mongoose.Schema({
   id_sender: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
   },
   id_recipient: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
   },
   value: {
     type: Number,
@@ -17,6 +18,11 @@ const schema = new Schema({
     required: true,
     default: Date.now(),
   },
+  updated_at:{
+    type: Date,
+    required: true,
+    default: Date.now(),
+  }
 });
 
-export default model("Transfer",schema,"transfers");
+export default mongoose.model('Transfer', Transferschema);
