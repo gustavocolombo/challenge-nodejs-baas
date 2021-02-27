@@ -1,4 +1,3 @@
-import {Schema, model} from 'mongoose';
 import mongoose from 'mongoose';
 
 const Transferschema = mongoose.Schema({

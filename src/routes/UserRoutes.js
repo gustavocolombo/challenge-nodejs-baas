@@ -8,11 +8,10 @@ export default class UserRoutes {
 
     #registerRoutes(app){
 
-        app.post('/login', (req,res) => this.controller.login(req,res));
-        app.get('/', [CheckToken], (req,res) => this.controller.listUsers(req,res));
+        app.get('/', (req,res) => this.controller.show(req,res));
         app.post('/', (req,res) => this.controller.saveUser(req,res));
-        app.put('/:id', [CheckToken], (req,res) => this.controller.updateUser(req,res));
-        app.delete('/:id', [CheckToken], (req,res) => this.controller.deleteUser(req,res));
+        app.put('/:id', (req,res) => this.controller.update(req,res));
+        app.delete('/:id', (req,res) => this.controller.delete(req,res));
 
         return app;
     }

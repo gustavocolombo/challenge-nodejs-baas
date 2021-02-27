@@ -1,58 +1,13 @@
-import jwt from "jsonwebtoken";
-import enviroment from "../configs/enviroment";
-import { UsersRepository } from "../repositories";
-import { ExceptionGlobalHandler, encryptText, checkEncryptText } from "../shared";
+import { ExceptionGlobalHandler, encryptText } from "../shared";
 import { UserValidator } from "../validator";
+import User from '../models/User';
 
 export default class UserController {
 
-    constructor(){
-        this.repository = new UsersRepository();
-    }
-
-    async login(req, res) {
-        try {
-            const user = req.body;
-
-            const foundUser = await this.repository.findOneByEmail(user.email);
-    
-            const validPass = checkEncryptText(user.password, foundUser.password);
-
-            console.log(validPass);
-    
-            if(!validPass) {
-                throw ExceptionGlobalHandler.makeError(`Invalid password!`, 401, 'VDTE')
-            }
-
-            const token = jwt.sign({
-                id: foundUser._id,
-                email: foundUser.email,
-                },
-                enviroment.privateJwt,
-                { expiresIn: "7d" }
-            )
-
-            const returnUser = Object.assign({}, foundUser._doc)
-
-            delete returnUser['password']
-            
-            return res.send({
-                user: returnUser,
-                token: token,
-            })
-        }catch (error) {
-            const sanitizedError = ExceptionGlobalHandler.handle(error);
-
-            console.log(error);
-
-            res.status(sanitizedError.code).send(sanitizedError)
-        }
-    }
-
-    async listUsers(req, res) {
+    async show(req, res) {
         const filters = req.filters;
 
-        let users = await this.repository.findAll(filters)
+        let users = await User.find(filters)
         res.send(users)
     }
 
@@ -64,7 +19,7 @@ export default class UserController {
 
             user.password = encryptText(user.password)
 
-            let savedUser = await this.repository.store(user)
+            let savedUser = await User.create(user)
             res.send(savedUser)
         } catch (error){
             const sanitizedError = ExceptionGlobalHandler.handle(error);
@@ -73,15 +28,33 @@ export default class UserController {
         }
     }
 
-    async updateUser(req, res) {
+    async update(req, res) {
         try {
+            const { email, oldPassword } = req.body;
             const { id } = req.params;
-            const body = req.body;
+            const userValidate = req.body;
 
-            await UserValidator(body)
+            const userIsValid = await UserValidator(userValidate);
 
-            let updatedUser = await this.repository.update(body, id)
-            res.send(updatedUser)
+            if (!userIsValid) {
+                return res.status(400).json({ message : 'User not found' })
+            }
+                
+            let user = await User.findById(id);
+            
+            if (email && email !== user.email) {
+                const userExist = await User.findOne({ email });
+                    if (userExist) {
+                        return res.status(400).json({ error: 'Email already exists.' });
+                    }
+            }
+        
+            user = await User.findByIdAndUpdate({ _id: id }, req.body, { new: true });
+        
+            Object.assign(user, { password: undefined });
+        
+            return res.json(user);
+
         } catch (error){
             const sanitizedError = ExceptionGlobalHandler.handle(error);
 
@@ -89,11 +62,11 @@ export default class UserController {
         }
     }
 
-    async deleteUser(req, res) {
+    async delete(req, res) {
         try {
             const { id } = req.params;
 
-            await this.repository.delete(id)
+            await User.findByIdAndDelete(id)
             res.json({
                 message: `User with id ${id} successful deleted!`
             })

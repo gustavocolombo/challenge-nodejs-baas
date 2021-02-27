@@ -8,7 +8,7 @@ function validateSchema(operation){
     default:
       return yup.object().shape({
         email: yup.string().email().typeError(isNotValid).required(isRequired),
-        password: yup.string().min(0, notBlank).required(isRequired),
+        password: yup.string().min(6, notBlank).required(isRequired),
       })
   }
 }
