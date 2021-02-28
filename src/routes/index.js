@@ -1,12 +1,13 @@
 import UserRoutes from "./UserRoutes";
 import SessionRoutes from './SessionRoutes';
-
+import AccountRoutes from './AccountRoutes';
 export default class Routes {
     constructor(app){
         this.app = app;
         this.routes = [
             UserRoutes,
             SessionRoutes,
+            AccountRoutes,
         ];
     }
 

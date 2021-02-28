@@ -1,5 +1,5 @@
 import { SessionUserController } from "../controllers";
-export default class UserRoutes {
+export default class SessionRoutes {
 
     constructor(){
         this.controller = new SessionUserController();
