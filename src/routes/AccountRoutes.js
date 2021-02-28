@@ -9,6 +9,7 @@ export default class AccountRoutes {
     #registerRoutes(app){
 
         app.get('/show', (req,res) => this.controller.show(req,res));
+        app.get('/:id', (req,res) => this.controller.index(req,res));
         return app;
     }
 
