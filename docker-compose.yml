@@ -1,0 +1,22 @@
+version: '1'
+
+services:
+
+  backend-liveonsolutions:
+    build:
+      context: ./backend
+    container_name: backend-liveonsolutions
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    links:
+      - mongo
+
+  mongo:
+    image: 'mongo'
+    container_name: mongodb-liveonsolutions
+    ports:
+      - '27017:27017'
+    volumes:
+      -  $HOME/dataset/data/db:/data/db
