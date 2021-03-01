@@ -1,6 +1,7 @@
 import UserRoutes from "./UserRoutes";
 import SessionRoutes from './SessionRoutes';
 import AccountRoutes from './AccountRoutes';
+import TransferRoutes from './TransferRoutes';
 export default class Routes {
     constructor(app){
         this.app = app;
@@ -8,6 +9,7 @@ export default class Routes {
             UserRoutes,
             SessionRoutes,
             AccountRoutes,
+            TransferRoutes,
         ];
     }
 

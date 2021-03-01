@@ -21,7 +21,7 @@ const AccountSchema = mongoose.Schema({
 
   balance: {
     type: Number,
-    default: 0,
+    default: 10,
   },
 
   created_at:{
