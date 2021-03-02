@@ -12,7 +12,7 @@ export default class Routes {
             TransferRoutes,
         ];
     }
-
+    
     registerRoutes(){
         this.app.get('/status', (req,res) => {
             res.json({

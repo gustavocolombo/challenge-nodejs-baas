@@ -23,5 +23,3 @@ app.use(Cors)
 app.use('/api', new Routes(express.Router()).registerRoutes())
 
 export default app
-
-///api/user

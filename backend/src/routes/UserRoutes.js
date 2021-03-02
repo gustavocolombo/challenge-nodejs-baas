@@ -7,7 +7,7 @@ export default class UserRoutes {
     }
 
     #registerRoutes(app){
-
+        
         app.get('/', (req,res) => this.controller.show(req,res));
         app.post('/', (req,res) => this.controller.saveUser(req,res));
         app.put('/:id', (req,res) => this.controller.update(req,res));
